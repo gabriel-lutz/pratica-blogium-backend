@@ -20,4 +20,10 @@ app.get("/posts", (req, res) =>{
     res.send(posts)
 })
 
+app.get("/posts/:id", (req,res)=>{
+    const id = parseInt(req.params.id)
+    const selectedPost = posts.find(p=> id===p.id)
+    res.send(selectedPost)
+})
+
 app.listen(4000)
