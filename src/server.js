@@ -55,7 +55,8 @@ app.post("/posts/:id/comments", (req,res)=>{
     const id = parseInt(req.params.id)
     commentId++
     posts.forEach(p=>p.id === req.body.postId && p.commentCount++)
-    comments.push({...req.body, id: commentId})
+    comments.push({id: commentId ,...req.body })
+    res.send("ok")
     
 })
 
