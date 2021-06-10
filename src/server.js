@@ -14,8 +14,20 @@ const posts = [{
     commentCount: 2
   }]
 
-  let id = 1
+const comments = [{
+    id: 1,
+    postId: 1,
+    author: 'João',
+    content: 'Muito bom esse post! Tá de parabéns'
+  }, {
+    id: 2,
+    postId: 1,
+    author: 'Maria',
+    content: 'Como faz pra dar palmas?'
+  }]
 
+  let id = 1
+  let commentId = comments.length
 
 app.get("/posts", (req, res) =>{
     res.send(posts)
@@ -29,9 +41,22 @@ app.get("/posts/:id", (req,res)=>{
 
 app.post("/posts", (req,res)=>{
     id++
-    const newPost = {...req.body, id: id, contentPreview: req.body.content.substring(3, req.body.content.length>50? 53: req.body.content.length-4 ), commentCount:"1000"}
+    const newPost = {...req.body, id: id, contentPreview: req.body.content.substring(3, req.body.content.length>50? 53: req.body.content.length-4 ), commentCount: 0 }
     posts.push(newPost)
     res.send(newPost)
+})
+
+app.get("/posts/:id/comments", (req, res)=>{
+    const id = parseInt(req.params.id)
+    res.send(comments.filter(c=>id===c.postId))
+})
+
+app.post("/posts/:id/comments", (req,res)=>{
+    const id = parseInt(req.params.id)
+    commentId++
+    posts.forEach(p=>p.id === req.body.postId && p.commentCount++)
+    comments.push({...req.body, id: commentId})
+    
 })
 
 app.listen(4000)
